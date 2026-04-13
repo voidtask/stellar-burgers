@@ -1,19 +1,22 @@
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import { resetPasswordApi } from '@api';
 import { ResetPasswordUI } from '@ui-pages';
+import { useForm } from '../../hooks/use-form';
 
 export const ResetPassword: FC = () => {
   const navigate = useNavigate();
-  const [password, setPassword] = useState('');
-  const [token, setToken] = useState('');
   const [error, setError] = useState<Error | null>(null);
+
+  const { values, handleChange } = useForm({
+    token: '',
+    password: ''
+  });
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
     setError(null);
-    resetPasswordApi({ password, token })
+    resetPasswordApi(values)
       .then(() => {
         localStorage.removeItem('resetPassword');
         navigate('/login');
@@ -30,10 +33,9 @@ export const ResetPassword: FC = () => {
   return (
     <ResetPasswordUI
       errorText={error?.message}
-      password={password}
-      token={token}
-      setPassword={setPassword}
-      setToken={setToken}
+      password={values.password}
+      token={values.token}
+      handleChange={handleChange}
       handleSubmit={handleSubmit}
     />
   );

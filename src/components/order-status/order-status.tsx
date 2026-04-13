@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { OrderStatusProps } from './type';
 import { OrderStatusUI } from '@ui';
 
@@ -10,6 +10,7 @@ const statusText: { [key: string]: string } = {
 
 export const OrderStatus: FC<OrderStatusProps> = ({ status }) => {
   let textStyle = '';
+
   switch (status) {
     case 'pending':
       textStyle = '#E52B1A';

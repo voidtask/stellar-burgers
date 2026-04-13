@@ -1,7 +1,5 @@
 import { PageUIProps } from '../common-type';
 
-export type ResetPasswordUIProps = Omit<PageUIProps, 'email' | 'setEmail'> & {
-  password: string;
-  token: string;
+export type ForgotPasswordUIProps = Omit<PageUIProps, 'setEmail'> & {
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
