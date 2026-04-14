@@ -3,6 +3,7 @@ import { LoginUI } from '@ui-pages';
 import { useDispatch, useSelector } from '../../services/store';
 import {
   fetchLoginUser,
+  getUserThunk,
   removeErrorText,
   selectErrorText,
   selectLoading
@@ -28,7 +29,7 @@ export const Login: FC = () => {
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
     dispatch(removeErrorText());
-    dispatch(fetchLoginUser(values));
+    dispatch(fetchLoginUser(values)).then(() => dispatch(getUserThunk()));
   };
 
   if (isLoading) {
