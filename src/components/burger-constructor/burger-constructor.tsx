@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from '../../services/store';
 import { useNavigate } from 'react-router-dom';
 import {
   clearOrderModalData,
+  closeOrderRequest,
   fetchNewOrder,
   selectConstructorItems,
   selectOrderModalData,
@@ -42,6 +43,7 @@ export const BurgerConstructor: FC = () => {
 
   const closeOrderModal = () => {
     dispatch(clearOrderModalData());
+    dispatch(closeOrderRequest());
   };
 
   const price = useMemo(() => {
