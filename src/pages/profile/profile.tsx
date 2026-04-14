@@ -2,6 +2,7 @@ import React, { FC, SyntheticEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from '../../services/store';
 import {
   fetchUpdateUser,
+  getUserThunk,
   selectLoading,
   selectUser
 } from '../../slices/user-slice';
@@ -20,26 +21,28 @@ export const Profile: FC = () => {
     password: ''
   });
 
-  useEffect(() => {
-    setFormValue((prevState) => ({
-      ...prevState,
-      name: user?.name || '',
-      email: user?.email || ''
-    }));
-  }, [user]);
+  const [isFormChanged, setIsFormChanged] = useState(false);
 
-  const isFormChanged =
-    formValue.name !== user?.name ||
-    formValue.email !== user?.email ||
-    !!formValue.password;
+  useEffect(() => {
+    setIsFormChanged(false);
+
+    setFormValue({
+      name: user?.name || '',
+      email: user?.email || '',
+      password: ''
+    });
+  }, [user]);
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    dispatch(fetchUpdateUser(formValue));
+    dispatch(fetchUpdateUser(formValue)).then(() => dispatch(getUserThunk()));
   };
 
   const handleCancel = (e: SyntheticEvent) => {
     e.preventDefault();
+
+    setIsFormChanged(false);
+
     setFormValue({
       name: user.name,
       email: user.email,
@@ -52,6 +55,10 @@ export const Profile: FC = () => {
       ...prevState,
       [e.target.name]: e.target.value
     }));
+
+    if (!isFormChanged) {
+      setIsFormChanged(true);
+    }
   };
 
   if (isLoading) {
